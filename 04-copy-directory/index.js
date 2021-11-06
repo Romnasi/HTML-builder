@@ -13,9 +13,9 @@ const copy = async (fileName) => {
       path.join(originPath, fileName), 
       path.join(copyPath, fileName)
     );
-    console.log(`${fileName} was copied`);
+    stdout.write(`${fileName} copied\n`);
   } catch {
-    console.log('The file could not be copied');
+    stdout.write('The file could not be copied\n');
   }
 };
 
@@ -31,7 +31,19 @@ const readFolder = async () => {
 };
 
 
+const clean = async () => {
+  await fsPromises.rm(
+    copyPath, 
+    { recursive: true, force: true }, 
+    (err) => {
+      if (err) throw err;
+    }
+  );
+};
+
+
 const createCopyFolder = async () => {
+  await clean();
   fsPromises.mkdir( copyPath, { recursive: true } );
   readFolder();
 };
