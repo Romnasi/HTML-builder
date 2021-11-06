@@ -8,8 +8,7 @@ const getStat = async (partsOfPath, fileName) => {
   try {
     const filePath = path.join(...partsOfPath , fileName);
     const stats = await fsPromises.stat(filePath);
-    const sizeKb = stats.size / 1024;
-    return sizeKb;
+    return stats.size;
   } 
   catch (error) {
     stdout.write(error.message);
@@ -27,7 +26,7 @@ const readFolder = async (partsOfPath) => {
         const fileName = file.name.split('.')[0];
         const fileExt = path.extname(file.name).slice(1);
         const size = await getStat(partsOfPath, file.name);
-        stdout.write(`${fileName} - ${fileExt} - ${size}kb\n`);
+        stdout.write(`${fileName} - ${fileExt} - ${size}bytes\n`);
       }
     }
   } catch (error) {
